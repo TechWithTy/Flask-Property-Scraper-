@@ -6,6 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scraping Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/output.css') }}">
+    <style>
+        .property-card {
+            margin: 0.5em;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .property-card:hover {
+            transform: scale(1.02);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .property-details {
+            padding: 1em;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1em;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .pagination a {
+            margin: 0 0.25rem;
+            padding: 0.5rem 1rem;
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            text-decoration: none;
+        }
+        
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+        
+        .pagination a.active {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+        }
+    </style>
 </head>
 <body>
     <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
@@ -24,17 +81,42 @@
     <section class="bg-white dark:bg-gray-900 py-8">
         <div class="container mx-auto my-5">
             <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none dark:text-white">Scraping Results</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid-container">
                 {% for property in properties %}
-                <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-                    <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">{{ property['full_street_line'] }}</h2>
-                    <p class="text-gray-700 dark:text-gray-400"><strong>Price:</strong> ${{ property['sold_price'] }}</p>
-                    <p class="text-gray-700 dark:text-gray-400 mb-4"><strong>Details:</strong> {{ property['text'] }}</p>
-                    <p class="text-gray-700 dark:text-gray-400"><strong>Realtor:</strong> {{ property['agent'] }}</p>
-                    <p class="text-gray-700 dark:text-gray-400"><strong>Email:</strong> {{ property['agent_email'] }}</p>
-                    <p class="text-gray-700 dark:text-gray-400"><strong>Parking:</strong> {{ property['parking_garage'] }}</p>
+                <div class="property-card">
+                    <img class="property-image" src="{{ property['primary_photo'] }}" alt="Property Image" />
+                    <div class="property-details">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ property['full_street_line'] }}</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Price:</strong> ${{ property['sold_price'] }}</p>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Details:</strong> {{ property['text'] }}</p>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Realtor:</strong> {{ property['agent'] }}</p>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Email:</strong> {{ property['agent_email'] }}</p>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Parking:</strong> {{ property['parking_garage'] }}</p>
+                    </div>
                 </div>
                 {% endfor %}
+            </div>
+
+            <div class="mt-5 flex justify-center">
+                <nav aria-label="Page navigation">
+                    <ul class="inline-flex items-center -space-x-px">
+                        {% if page > 1 %}
+                        <li>
+                            <a href="/scrape?page={{ page - 1 }}" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                        </li>
+                        {% endif %}
+                        {% for p in range(1, total_pages + 1) %}
+                        <li>
+                            <a href="/scrape?page={{ p }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ p }}</a>
+                        </li>
+                        {% endfor %}
+                        {% if page < total_pages %}
+                        <li>
+                            <a href="/scrape?page={{ page + 1 }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
         </div>
     </section>

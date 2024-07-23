@@ -54,7 +54,6 @@ def scrape():
 
     return render_template("results.html", properties=properties, page=page, total_pages=total_pages)
 
-
 @app.route("/search", methods=["GET"])
 def search():
     location = request.args.get('location', 'San Diego, CA')
@@ -67,25 +66,28 @@ def search():
     order = request.args.get('order', 'asc')
     filter_by = request.args.get('filter_by', '')
     filter_value = request.args.get('filter_value', '')
+    output_format = request.args.get('format', 'json')  # Add parameter for output format
 
-    # Scrape new data if results.json doesn't exist
+    # Scrape new data
     properties_df = scrape_property(
-            location=location,
-            listing_type=listing_type,
-            past_days=past_days
-        )
+        location=location,
+        listing_type=listing_type,
+        past_days=past_days
+    )
+
+    # Save the scraped data
     save_results(properties_df)
-   
-    properties_df = pd.read_json('data/results.json')
 
     # Filtering
     if filter_by and filter_value:
-        properties_df = filter_properties(properties_df, filter_by, filter_value)
+        properties_df = filter_properties(
+            properties_df, filter_by, filter_value)
 
     # Searching
     if query:
         properties_df = properties_df[
-            properties_df.apply(lambda row: query.lower() in row.astype(str).str.lower().to_dict().values(), axis=1)
+            properties_df.apply(lambda row: query.lower() in row.astype(
+                str).str.lower().to_dict().values(), axis=1)
         ]
 
     # Sorting
@@ -94,16 +96,18 @@ def search():
 
     total_properties = len(properties_df)
     total_pages = (total_properties + per_page - 1) // per_page
-    properties = properties_df.iloc[(page - 1) * per_page: page * per_page].to_dict(orient='records')
+    properties = properties_df.iloc[(
+        page - 1) * per_page: page * per_page].to_dict(orient='records')
 
     response = {
-        "properties": properties,
-        "page": page,
-        "total_pages": total_pages,
-        "total_properties": total_properties
+        'page': page,
+        'total_pages': total_pages,
+        'total_properties': total_properties,
+        'properties': properties
     }
 
-    if request.accept_mimetypes['application/json']:
+    # Return JSON if the format is 'json', otherwise render the HTML template
+    if output_format == 'json':
         return jsonify(response)
     else:
         return render_template("results.html", properties=properties, page=page, total_pages=total_pages)

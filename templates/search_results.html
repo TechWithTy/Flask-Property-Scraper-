@@ -11,111 +11,93 @@
     />
   </head>
   <body>
-    <nav
-      class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900"
-    >
-      <div
-        class="container flex flex-wrap justify-between items-center mx-auto"
-      >
-        <a href="https://flowbite.com/" class="flex items-center">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            class="mr-3 h-6 sm:h-9"
-            alt="Flowbite Logo"
-          />
-          <span
-            class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-            >Flowbite</span
-          >
-        </a>
-
-        <section class="bg-white dark:bg-gray-900 py-8">
-          <div class="container mx-auto my-5">
-            <form
-              class="flex flex-wrap gap-2 md:order-1"
-              action="/search"
-              method="get"
-            >
-              <input
-                type="text"
-                name="location"
-                value="San Diego, CA"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto pl-3 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Location"
-              />
-
-              <select
-                name="listing_type"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto pl-3 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                <option value="sold">Sold</option>
-                <option value="rent">Rent</option>
-                <option value="sale">Sale</option>
+    <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
+        <div class="container flex flex-wrap justify-between items-center mx-auto">
+          <a href="https://flowbite.com/" class="flex items-center">
+            <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+          </a>
+        </div>
+      </nav>
+      
+      <section class="bg-white dark:bg-gray-900 py-8">
+        <div class="container mx-auto my-5 flex flex-col items-center">
+          <form class="flex flex-wrap gap-2 md:order-1" action="/search" method="get">
+            <input type="hidden" name="page" value="1" />
+            <input type="hidden" name="per_page" value="10" />
+            <input type="hidden" name="format" value="html" />
+    
+            <input type="text" name="location" value="San Diego, CA"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto pl-3 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Location" />
+    
+            <select name="listing_type"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto pl-3 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option value="sold">Sold</option>
+              <option value="rent">Rent</option>
+              <option value="sale">Sale</option>
+            </select>
+    
+            <input type="number" name="past_days" value="30"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto pl-3 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Past Days" />
+    
+            <input type="text" name="query"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto pl-3 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search..." />
+    
+            <button type="submit"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              Search
+            </button>
+          </form>
+    
+          <div x-data="{ open: false }" class="w-full my-4">
+            <button @click="open = !open"
+              class="w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg text-lg px-6 py-3 text-center focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
+              Filter Options
+            </button>
+            <div x-show="open" class="flex flex-col mt-4 space-y-4">
+              <select name="sort_by"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="">Sort By</option>
+                <option value="price">Price</option>
+                <option value="sqft">Square Feet</option>
+                <option value="beds">Beds</option>
+                <option value="baths">Baths</option>
+                <option value="price_per_sqft">Price per Sq Ft</option>
+                <option value="days_on_mls">Days on MLS</option>
               </select>
-
-              <input
-                type="number"
-                name="past_days"
-                value="30"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto pl-3 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Past Days"
-              />
-
-              <input
-                type="text"
-                name="query"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto pl-3 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search..."
-              />
-
-              <button
-                type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Search
-              </button>
-            </form>
-
-            <div x-data="{ open: false }" class="mt-4">
-              <button
-                @click="open = !open"
-                class="w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg text-lg px-6 py-3 text-center focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-              >
-                Filter Options
-              </button>
-              <div
-                x-show="open"
-                class="flex flex-col md:flex-row mt-4 space-y-4 md:space-y-0 md:space-x-4"
-              >
-                <input
-                  type="text"
-                  name="sort_by"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Sort By"
-                />
-                <select
-                  name="order"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option value="asc">Ascending</option>
-                  <option value="desc">Descending</option>
-                </select>
-                <input
-                  type="text"
-                  name="filter_by"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Filter By"
-                />
-                <input
-                  type="text"
-                  name="filter_value"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Filter Value"
-                />
-              </div>
+              <select name="order"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+              </select>
+              <select name="filter_by"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="">Filter By</option>
+                <option value="city">City</option>
+                <option value="state">State</option>
+                <option value="zip_code">Zip Code</option>
+                <option value="beds">Beds</option>
+                <option value="baths">Baths</option>
+                <option value="price">Price</option>
+                <option value="style">Style</option>
+                <option value="neighborhoods">Neighborhoods</option>
+                <option value="county">County</option>
+                <option value="stories">Stories</option>
+                <option value="hoa_fee">HOA Fee</option>
+                <option value="parking_garage">Parking Garage</option>
+                <option value="year_built">Year Built</option>
+                <option value="days_on_mls">Days on MLS</option>
+              </select>
+              <input type="text" name="filter_value"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Filter Value" />
             </div>
           </div>
-        </section>
+        </div>
+      </section>
       </div>
     </nav>
 

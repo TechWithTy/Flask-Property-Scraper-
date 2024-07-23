@@ -1,16 +1,19 @@
 import os
 import json
 import pandas as pd
-from flask import Flask, render_template, send_file, request, jsonify
+from flask import Flask, render_template, send_file, request
 from homeharvest import scrape_property
 
 app = Flask(__name__)
+
+# Adding custom filters to Jinja environment
+app.jinja_env.globals.update(min=min, max=max)
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/scrape", methods=["GET"])
+@app.route("/scrape")
 def scrape():
     page = int(request.args.get('page', 1))
     per_page = 10  # Number of properties per page
@@ -26,13 +29,6 @@ def scrape():
     os.makedirs('data', exist_ok=True)
     with open('data/results.json', 'w') as f:
         json.dump(properties, f, default=str)
-
-    if request.headers.get('Accept') == 'application/json':
-        return jsonify({
-            'properties': properties,
-            'page': page,
-            'total_pages': total_pages
-        })
     
     return render_template("results.html", properties=properties, page=page, total_pages=total_pages)
 

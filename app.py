@@ -130,7 +130,7 @@ def search():
     if output_format == 'json':
         return jsonify(response)
     else:
-        return render_template("results.html", properties=properties, page=page, total_pages=total_pages)
+        return render_template("search_results.html", properties=properties, page=page, total_pages=total_pages)
 
 
 

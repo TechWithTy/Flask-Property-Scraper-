@@ -29,6 +29,10 @@ def filter_properties(properties_df, filter_by, filter_value):
 def index():
     return render_template("index.html")
 
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.DEBUG)
 
 @app.route("/scrape", methods=["GET"])
 def scrape():
@@ -37,6 +41,7 @@ def scrape():
     past_days = int(request.args.get('past_days', 30))
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 10))
+    output_format = request.args.get('format', 'json')  # Default to 'json'
 
     properties_df = scrape_property(
         location=location,
@@ -52,7 +57,22 @@ def scrape():
     with open('data/results.json', 'w') as f:
         json.dump(properties, f, default=str)
 
-    return render_template("results.html", properties=properties, page=page, total_pages=total_pages)
+    response = {
+        'page': page,
+        'total_pages': total_pages,
+        'total_properties': total_properties,
+        'properties': properties
+    }
+
+    # Debug log to check which response is being returned
+    logging.debug(f"Response format: {output_format}")
+    logging.debug(f"Response data: {response}")
+
+    # Return JSON if the format is 'json', otherwise render the HTML template
+    if output_format == 'json':
+        return jsonify(response)
+    else:
+        return render_template("results.html", properties=properties, page=page, total_pages=total_pages)
 
 @app.route("/search", methods=["GET"])
 def search():

@@ -51,6 +51,8 @@ To scrape property data, navigate to `/scrape` endpoint with the required query 
 - `page`: Page number for pagination (default: 1)
 - `per_page`: Number of properties per page (default: 10)
 
+**http://127.0.0.1:5000/scrape?location=San%20Diego%2C%20CA&listing_type=sold&past_days=30&page=1&per_page=10&format=json**
+
 Example:
 ```sh
 curl -G -d "location=San Diego, CA" -d "listing_type=sold" -d "past_days=30" -d "page=1" -d "per_page=10" http://127.0.0.1:5000/scrape

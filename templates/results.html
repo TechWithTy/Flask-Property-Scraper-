@@ -1,119 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scraping Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/output.css') }}">
-    
-</head>
-<body>
-    <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
-        <div class="container flex flex-wrap justify-between items-center mx-auto">
-            <a href="https://flowbite.com/" class="flex items-center">
-                <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo">
-                <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-            </a>
-            <div class="flex md:order-2">
-                <a href="/" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Back to Home</a>
-                <a href="/download" class="ml-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Download Excel</a>
-            </div>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dist/css/output.css') }}"
+    />
+  </head>
+  <body>
+    <nav
+      class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900"
+    >
+      <div
+        class="container flex flex-wrap justify-between items-center mx-auto"
+      >
+        <a href="https://flowbite.com/" class="flex items-center">
+          <img
+            src="https://flowbite.com/docs/images/logo.svg"
+            class="mr-3 h-6 sm:h-9"
+            alt="Flowbite Logo"
+          />
+          <span
+            class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+            >Flowbite</span
+          >
+        </a>
+        <div class="flex md:order-2">
+          <a
+            href="/"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >Back to Home</a
+          >
+          <a
+            href="/download"
+            class="ml-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            >Download Excel</a
+          >
         </div>
+      </div>
     </nav>
 
     <section class="bg-white dark:bg-gray-900 py-8">
-        <div class="container mx-auto my-5">
-            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none dark:text-white">Scraping Results</h1>
-            <div class="grid-container">
-                {% for property in properties %}
-                <div class="property-card">
-                    <div id="carousel-{{ loop.index }}" class="relative w-full" data-carousel="slide">
-                        <!-- Carousel wrapper -->
-                        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                            {% for image in property['alt_photos'].split(', ') %}
-                            <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                <img src="{{ image }}" class="absolute block w-full h-56 md:h-96 object-cover" alt="Property Image">
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <!-- Slider indicators -->
-                        <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-                            {% for idx in range(property['alt_photos'].split(', ') | length) %}
-                            <button type="button" class="w-3 h-3 rounded-full" aria-current="{{ loop.index0 == idx }}" aria-label="Slide {{ idx + 1 }}" data-carousel-slide-to="{{ idx }}"></button>
-                            {% endfor %}
-                        </div>
-                        <!-- Slider controls -->
-                        <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                                </svg>
-                                <span class="sr-only">Previous</span>
-                            </span>
-                        </button>
-                        <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                                </svg>
-                                <span class="sr-only">Next</span>
-                            </span>
-                        </button>
+      <div class="container mx-auto my-5">
+        <h1
+          class="my-8 text-4xl font-extrabold tracking-tight leading-none dark:text-white"
+        >
+          Property Results
+        </h1>
+        <div class="grid-container">
+          {% for property in properties %}
+          <div class="property-card">
+            <div
+              id="carousel-{{ loop.index }}"
+              class="relative w-full"
+              data-carousel="slide"
+            >
+              <!-- Carousel wrapper -->
+              <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                {% set images = property['alt_photos'].split(', ') %}
+                {% if images %}
+                    {% for image in images %}
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img loading="lazy" src="{{ image }}" class="absolute block w-full h-56 md:h-96 object-cover" alt="Property Image">
                     </div>
-                                        <div class="property-details">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ property['full_street_line'] }}</h5>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Price:</strong> ${{ property['sold_price'] }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Details:</strong> {{ property['text'] }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Realtor:</strong> {{ property['agent'] }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Email:</strong> {{ property['agent_email'] }}</p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Parking:</strong> {{ property['parking_garage'] }}</p>
+                    {% endfor %}
+                {% else %}
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img loading="lazy" src="https://placehold.co/600x400/EEE/31343C" class="absolute block w-full h-56 md:h-96 object-cover" alt="Placeholder Image">
                     </div>
-                </div>
+                {% endif %}
+              </div>
+              <!-- Slider indicators -->
+              <div
+                class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse"
+              >
+                {% set max_indicators = 5 %} {% set total_images =
+                property['alt_photos'].split(', ') | length %} {% if
+                total_images <= max_indicators %} {% for idx in
+                range(total_images) %}
+                <button
+                  type="button"
+                  class="w-3 h-3 rounded-full"
+                  aria-current="{{ loop.index0 == idx }}"
+                  aria-label="Slide {{ idx + 1 }}"
+                  data-carousel-slide-to="{{ idx }}"
+                ></button>
+                {% endfor %} {% else %} {% for idx in range(max_indicators - 1)
+                %}
+                <button
+                  type="button"
+                  class="w-3 h-3 rounded-full"
+                  aria-current="{{ loop.index0 == idx }}"
+                  aria-label="Slide {{ idx + 1 }}"
+                  data-carousel-slide-to="{{ idx }}"
+                ></button>
                 {% endfor %}
+                <button
+                  type="button"
+                  class="w-3 h-3 rounded-full"
+                  aria-current="false"
+                  aria-label="Slide {{ total_images }}"
+                  data-carousel-slide-to="{{ total_images - 1 }}"
+                ></button>
+                <span class="w-3 h-3 text-base text-black text-bold italic"
+                  >{{ total_images }}</span
+                >
+                {% endif %}
+              </div>
+              <!-- Slider controls -->
+              <button
+                type="button"
+                class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-prev
+              >
+                <span
+                  class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+                >
+                  <svg
+                    class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 1 1 5l4 4"
+                    />
+                  </svg>
+                  <span class="sr-only">Previous</span>
+                </span>
+              </button>
+              <button
+                type="button"
+                class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-next
+              >
+                <span
+                  class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+                >
+                  <svg
+                    class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 9 4-4-4-4"
+                    />
+                  </svg>
+                  <span class="sr-only">Next</span>
+                </span>
+              </button>
             </div>
-            <div class="flex justify-center mt-5">
-                <nav aria-label="Page navigation">
-                    <ul class="inline-flex items-center -space-x-px">
-                        {% if page > 1 %}
-                        <li>
-                            <a href="/scrape?page={{ page - 1 }}" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                        </li>
-                        {% endif %}
-                        {% if page > 5 %}
-                        <li>
-                            <a href="/scrape?page=1" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <span class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
-                        </li>
-                        {% endif %}
-                        {% for p in range(max(page - 2, 1), min(page + 3, total_pages + 1)) %}
-                        <li>
-                            <a href="/scrape?page={{ p }}" class="py-2 px-3 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {% if p == page %}bg-blue-500 text-white{% else %}text-gray-500 bg-white{% endif %}">{{ p }}</a>
-                        </li>
-                        {% endfor %}
-                        
-                        {% if page + 2 < total_pages %}
-                        <li>
-                            <span class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
-                        </li>
-                        <li>
-                            <a href="/scrape?page={{ total_pages }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ total_pages }}</a>
-                        </li>
-                        {% endif %}
-                        {% if page < total_pages %}
-                        <li>
-                            <a href="/scrape?page={{ page + 1 }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
+            <div class="property-details">
+              <h5
+                class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+              >
+                {{ property['full_street_line'] }}
+              </h5>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                <strong>Price:</strong> ${{ property['sold_price'] }}
+              </p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                <strong>Details:</strong> {{ property['text'] }}
+              </p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                <strong>Realtor:</strong> {{ property['agent'] }}
+              </p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                <strong>Email:</strong> {{ property['agent_email'] }}
+              </p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                <strong>Parking:</strong> {{ property['parking_garage'] }}
+              </p>
             </div>
-            
+          </div>
+          {% endfor %}
         </div>
+        <div class="flex justify-center mt-5">
+          <nav aria-label="Page navigation">
+            <ul class="inline-flex items-center -space-x-px">
+              {% if page > 1 %}
+              <li>
+                <a
+                  href="/scrape?page={{ page - 1 }}"
+                  class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >Previous</a
+                >
+              </li>
+              {% endif %} {% if page > 5 %}
+              <li>
+                <a
+                  href="/scrape?page=1"
+                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >1</a
+                >
+              </li>
+              <li>
+                <span
+                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+                  >...</span
+                >
+              </li>
+              {% endif %} {% for p in range(max(page - 2, 1), min(page + 3,
+              total_pages + 1)) %}
+              <li>
+                <a
+                  href="/scrape?page={{ p }}"
+                  class="py-2 px-3 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {% if p == page %}bg-blue-500 text-white{% else %}text-gray-500 bg-white{% endif %}"
+                  >{{ p }}</a
+                >
+              </li>
+              {% endfor %} {% if page + 2 < total_pages %}
+              <li>
+                <span
+                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+                  >...</span
+                >
+              </li>
+              <li>
+                <a
+                  href="/scrape?page={{ total_pages }}"
+                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >{{ total_pages }}</a
+                >
+              </li>
+              {% endif %} {% if page < total_pages %}
+              <li>
+                <a
+                  href="/scrape?page={{ page + 1 }}"
+                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >Next</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
-</body>
+  </body>
 </html>
